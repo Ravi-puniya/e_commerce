@@ -1,0 +1,9 @@
+// fake store api
+https://fakestoreapi.com/products
+
+
+//dummy json
+https://dummyjson.com/products
+
+//
+https://api.storerestapi.com/products/running-sneaker
