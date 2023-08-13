@@ -12,9 +12,11 @@ class ButtonWidget extends StatelessWidget {
   bool isborder;
   FontWeight weight;
   double fontsize;
+  VoidCallback ontap;
 
   ButtonWidget(
       {super.key,
+      required this.ontap,
       required this.radius,
       required this.isborder,
       required this.fontsize,
@@ -29,18 +31,21 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: alignment,
-      width: width,
-      padding: EdgeInsets.symmetric(vertical: vertical, horizontal: horiztal),
-      decoration: BoxDecoration(
-        border: isborder? Border.all(width: .5) : null,
-        color: decColor,
-        borderRadius: BorderRadius.circular(radius),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(color: textcolor,fontSize:fontsize,fontWeight: weight),
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+        alignment: alignment,
+        width: width,
+        padding: EdgeInsets.symmetric(vertical: vertical, horizontal: horiztal),
+        decoration: BoxDecoration(
+          border: isborder? Border.all(width: .5) : null,
+          color: decColor,
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        child: Text(
+          text,
+          style: TextStyle(color: textcolor,fontSize:fontsize,fontWeight: weight),
+        ),
       ),
     );
   }

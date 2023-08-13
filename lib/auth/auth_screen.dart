@@ -1,4 +1,5 @@
 import 'package:e_commerce/Widget/button_widget.dart';
+import 'package:e_commerce/auth/verification_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -64,6 +65,11 @@ class LoginPage extends StatelessWidget {
               height: 10,
             ),
             ButtonWidget(
+              ontap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => VerificationPage(),
+                ));
+              },
               alignment: Alignment.center,
               decColor: Colors.red,
               horiztal: 10,
@@ -86,6 +92,7 @@ class LoginPage extends StatelessWidget {
                   height: 10,
                 ),
                 ButtonWidget(
+                  ontap: () {},
                   radius: 25,
                   isborder: true,
                   alignment: Alignment.center,
@@ -102,6 +109,7 @@ class LoginPage extends StatelessWidget {
                   height: 10,
                 ),
                 ButtonWidget(
+                  ontap: () {},
                   radius: 25,
                   isborder: true,
                   alignment: Alignment.center,
