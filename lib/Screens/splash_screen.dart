@@ -1,8 +1,17 @@
+import 'package:e_commerce/Models/product_one.dart';
 import 'package:e_commerce/auth/auth_screen.dart';
+import 'package:e_commerce/helper/services.dart';
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +84,6 @@ class SplashScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          
         ],
       )),
     );
