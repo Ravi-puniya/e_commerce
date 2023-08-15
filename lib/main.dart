@@ -1,3 +1,4 @@
+import 'package:e_commerce/Screens/home_screen.dart';
 import 'package:e_commerce/Screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,6 +17,6 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SplashScreen());
+        home: const HomeScreen());
   }
 }

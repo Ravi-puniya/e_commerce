@@ -5,12 +5,9 @@ import 'package:http/http.dart' as http;
 
 class HelperApi {
   Future<List<ModelOne>> getDataOne() async {
-    final response = await http
-        .get(Uri.parse('https://fakestoreapi.com/products'))
-        .then((value) {
-      print('1');
-      print(value);
-    });
+    final response =
+        await http.get(Uri.parse('https://fakestoreapi.com/products'));
+
     List<dynamic> decode = jsonDecode(response.body);
 
     return decode.map((e) => ModelOne.fromJson(e)).toList();
