@@ -1,8 +1,12 @@
-import 'package:e_commerce/Widget/product_card.dart';
+import 'package:e_commerce/Screens/product_screen.dart';
+import 'package:e_commerce/Utils/app_style.dart';
 import 'package:e_commerce/Widget/text_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../Models/product_one.dart';
+import '../Models/shoe_model.dart';
+import '../Widget/home_widget.dart';
+import '../helper/helper.dart';
 import '../helper/services.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -14,35 +18,59 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen>
     with SingleTickerProviderStateMixin {
+  final ScrollController _controller = ScrollController();
   late final TabController tabController =
       TabController(length: 3, vsync: this);
   bool isLoading = true;
+  late Future<List<Shoemodel>> _male;
+  late Future<List<Shoemodel>> _female;
+  late Future<List<Shoemodel>> _kids;
+  late Future<List<ModelOne>> _res;
 
   List<ModelOne> dataome = [];
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getData();
+  void getmale() {
+    _male = Helper().getMaleSneaker();
   }
 
-  getData() async {
-    List<ModelOne> res = await HelperApi().getDataOne();
+  void getfemale() {
+    _female = Helper().getFemaleSneaker();
+  }
 
-    dataome = res;
+  void getkids() {
+    _kids = Helper().getKidsSneaker();
+  }
+
+  @override
+  void initState() {
+    getData();
+    getmale();
+    getfemale();
+    getkids();
+    super.initState();
+  }
+
+  void getData() {
+    _res = HelperApi().getDataOne();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        bottom: TabBar(controller: tabController, tabs: [
-          Text('Men Shoes'),
-          Text('Women Shoes'),
-          Text('Kids Shoes'),
-        ]),
-        toolbarHeight: 107,
+        bottom: TabBar(
+            controller: tabController,
+            padding: EdgeInsets.only(bottom: 10),
+            dividerColor: Colors.red,
+            indicatorColor: Colors.red,
+            labelColor: Colors.black,
+            labelPadding: EdgeInsets.only(bottom: 5),
+            tabs: [
+              Text('Men Shoes'),
+              Text('Women Shoes'),
+              Text('Kids Shoes'),
+            ]),
+        toolbarHeight: 140,
         title: Container(
           alignment: Alignment.centerLeft,
           child: Column(
@@ -83,63 +111,131 @@ class _FeedScreenState extends State<FeedScreen>
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: 200,
-                child: TabBarView(
-                  controller: tabController,
-                  children: [
-                    Container(
-                      height: 100,
-                      color: Colors.red,
-                    ),
-                    Container(
-                      height: 100,
-                      color: Colors.yellow,
-                    ),
-                    Container(height: 100, color: Colors.green)
-                  ],
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Column(
+              children: [
+                Container(
+                  height: 210,
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      HomeWidget(
+                        male: _male,
+                        tabindex: 0,
+                      ),
+                      HomeWidget(
+                        male: _female,
+                        tabindex: 1,
+                      ),
+                      HomeWidget(
+                        male: _kids,
+                        tabindex: 0,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                child: FutureBuilder(
-                  future: HelperApi().getDataOne(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      return GridView.builder(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 20, 12, 2),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'All Items',
+                            style: appStyle(20, Colors.black, FontWeight.w600),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ProductScreen(
+                                  modelOne: _res,
+                                ),
+                              ));
+                            },
+                            child: Text(
+                              'ShowAll >',
+                              style:
+                                  appStyle(20, Colors.black, FontWeight.w600),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: FutureBuilder(
+                    future: _res,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasData) {
+                        return GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 40 / 52,
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10),
-                          itemCount: dataome.length,
+                                  crossAxisCount: 2),
+                          itemCount: 6,
                           itemBuilder: (context, index) {
-                            return ProductCard(
-                              price: dataome[index].price.toString(),
-                              category: dataome[index].category!.toString(),
-                              id: dataome[index].id!,
-                              name: dataome[index].title!.toString(),
-                              image: dataome[index].image!,
+                            final data = snapshot.data;
+                            return GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                margin: EdgeInsets.all(6),
+                                padding: EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black26,
+                                          offset: Offset(1, 1))
+                                    ]),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        height: 100,
+                                        child: Image.network(
+                                          data![index].image!,
+                                          fit: BoxFit.contain,
+                                          filterQuality: FilterQuality.medium,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      data[index].title!,
+                                      softWrap: true,
+                                      style: TextStyle(fontSize: 12),
+                                    )
+                                  ],
+                                ),
+                              ),
                             );
-                          });
-                    } else {
-                      return Center(child: Text('${dataome[1].category}'));
-                    }
-                  },
+                          },
+                        );
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
