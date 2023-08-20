@@ -1,3 +1,4 @@
+import 'package:e_commerce/Screens/product_detail_screen.dart';
 import 'package:e_commerce/Screens/product_screen.dart';
 import 'package:e_commerce/Utils/app_style.dart';
 import 'package:e_commerce/Widget/text_widget.dart';
@@ -187,7 +188,9 @@ class _FeedScreenState extends State<FeedScreen>
                           itemBuilder: (context, index) {
                             final data = snapshot.data;
                             return GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductDetail(one: data[index],),));
+                              },
                               child: Container(
                                 margin: EdgeInsets.all(6),
                                 padding: EdgeInsets.only(left: 10),

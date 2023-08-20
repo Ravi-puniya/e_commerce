@@ -2,8 +2,6 @@ import 'package:e_commerce/Widget/button_widget.dart';
 import 'package:e_commerce/Widget/text_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../Widget/profile_textbutton.dart';
-import 'home_screen.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
